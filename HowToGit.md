@@ -34,4 +34,5 @@
 * type ```git branch -d branchName``` to delete a branch.
 * for now branching limited to local repository copy, useable on server-side but more complex.
 * use ```git checkout branchName``` to change into this branch.
+* use ```git merge master``` to merge branches (so that e.g. dev branch work gets moved to master to push that to the server side repository
 
