@@ -1,2 +1,2 @@
 # Robotics
-Group work for Artificial Intelligence (Robotics). Collaboration with Jake Pierrepont and Jonatahn Caines.
+Group work for Artificial Intelligence (Robotics). Collaboration with Jake Pierrepont and Jonathan Caines.
