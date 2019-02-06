@@ -1,5 +1,5 @@
-//MOTOR PORT B IS DEAD
 package followLine;
+
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Keys;
 import lejos.hardware.ev3.EV3;
@@ -14,6 +14,14 @@ import lejos.robotics.chassis.*;
 import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 
+/* HINT MotorPort.B unfunctional
+*
+* Measurements
+* Wheelbase 10.5cm
+* Wheel diameter 5.2cm
+* Rotation calibrated for high number of degrees (e.g. full turns)
+*/
+
 public class FollowLineBasic {
 
 	// Basic initializations
@@ -23,14 +31,7 @@ public class FollowLineBasic {
 	static Keys buttons = ev3Brick.getKeys();
 	static EV3ColorSensor lcSensor = new EV3ColorSensor(SensorPort.S4);
 	static EV3ColorSensor rcSensor = new EV3ColorSensor(SensorPort.S3);
-	
-	/*
-	* Measurements
-	* Wheelbase 10.5cm
-	* Wheel diameter 5.2cm
-	* Rotation calibrated for high number of degrees (e.g. full turns)
-	*/
-	
+
 	// Specifications
 	static Wheel wheel1 = WheeledChassis.modelWheel(LEFT_MOTOR,5.5).offset(-5.2);
 	static Wheel wheel2 = WheeledChassis.modelWheel(RIGHT_MOTOR,5.5).offset(5.2);
@@ -53,7 +54,7 @@ public class FollowLineBasic {
 		final float GREY = 0.05f;
 		final float WHITE = 0.1f;
 
-		//pilot.forward();
+		// pilot.forward();
 		float[] averages = new float[1];
 		float diff = 0;
 		boolean fwd = false;
@@ -70,18 +71,20 @@ public class FollowLineBasic {
 			LCD.clear();
 			LCD.drawString(String.valueOf(getTurn(diff)), 0, 0);
 			
-			// If detected color difference between left and right light sensor is
+			// If detected color difference between left and right light sensor is...
 
-			// low, keep driving forward
+			// ...low, keep driving forward
+			// TODO Perfect value not yet determined (when is course correction really necessary to remain safe line-following)
 			if (Math.abs(diff) < 0.03 && !fwd) {
 				pilot.forward();
 				fwd=true;
 			}
-			// higher, rotate by diff degrees
+			// ...higher, rotate by diff degrees
 			else if (Math.abs(diff) < 0.03) {
 				//Delay.msDelay(25);
 				//do nothing
 			}
+			// Not currently functional, therefore commented until fixed
 			/*else if (Math.abs(diff) > 0.05) {
 				LCD.drawString(">.05", 0, 1);
 				fwd=false;
@@ -95,14 +98,12 @@ public class FollowLineBasic {
 				}
 				Delay.msDelay(100);
 			}*/
-			
 			else {
 				fwd=false;
 				pilot.rotate(getTurn(diff));
 				Delay.msDelay(50);
 			}
 		}
-		// Exit
 		System.exit(0);
 	}
 	
@@ -118,7 +119,7 @@ public class FollowLineBasic {
 		return ret;
 	}
 
-	// Measure averages with sensors parameters
+	// Measure averages with sensors as parameters
 	public static float[] measureAverage(SampleProvider left, SampleProvider right) { 
 		float[][] readings = measure(left, right);
 		float leftAverage = (readings[0][0] + readings[0][1] + readings[0][2]) / 3.0f;
@@ -132,8 +133,13 @@ public class FollowLineBasic {
 		float rightAverage = (readings[1][0] + readings[1][1] + readings[1][2]) / 3.0f;
 		return new float[] {leftAverage,rightAverage};
 	}
-	
-	// Turn light sensor readings into number of degrees to turn
+
+	/*
+	* Turn light sensor readings into number of degrees to turn
+	* TODO Increase or decrease 100 to change the intensity of rotations to follow the line,
+	* therefore increasing intensity of rotations leads to more fluid movement but is 
+	* riskier as the robot can get easier off course (TODO perfect value not yet determined)
+	*/ 
 	public static double getTurn(float val) {
 		return (double) val*100;
 	}
