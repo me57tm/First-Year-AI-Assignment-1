@@ -6,15 +6,15 @@
 * Before copying a working copy, we first should set up various git settings: 
 
 	```
-	git config --global user.name "name"
-	git config --global user.email "mail"
+	git config --global user.name "name" (substitute name, leave "")
+	git config --global user.email "mail" (same with mail)
 
 	git config --global color.ui true	
 	git config --global color.status auto
 	git config --global color.branch auto
 	git config --global merge.tool vimdiff
 	```
-:wq
+substitute name and mail for your working name and mail
 * type ``` git clone https://git.cs.bham.ac.uk/robotics-group4-o4/assignment1```, it will now copy the repository from the gitlab server to your local directory.
 * type ``` git remote add origin https://git.cs.bham.ac.uk/robotics-group4-o4/assignment1```, this sets a shortcut for the url to the variable 'origin'.
 
